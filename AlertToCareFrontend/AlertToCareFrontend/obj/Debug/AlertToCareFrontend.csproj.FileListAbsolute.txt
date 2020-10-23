@@ -1,12 +1,14 @@
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\bin\Debug\AlertToCareFrontend.exe.config
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\bin\Debug\AlertToCareFrontend.exe
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\bin\Debug\AlertToCareFrontend.pdb
+C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\AlertToCareFrontend.csprojAssemblyReference.cache
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\MainWindow.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\Views\BedView.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\Views\ConfigurationPage.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\Views\HomePage.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\Views\MonitorIcuPage.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\App.g.cs
+C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\AlertToCareFrontend_MarkupCompile.cache
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\AlertToCareFrontend_MarkupCompile.lref
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\obj\Debug\App.baml
