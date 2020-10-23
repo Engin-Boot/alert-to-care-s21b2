@@ -24,6 +24,9 @@ namespace AlertToCareFrontend
         public MonitorIcuPage()
         {
             InitializeComponent();
+
+            BedView bed = new BedView();
+            topStackPanel.Children.Add(bed);
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
