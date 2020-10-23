@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlertToCareFrontend.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,21 +14,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AlertToCareFrontend.Views
+namespace AlertToCareFrontend
 {
     /// <summary>
-    /// Interaction logic for ConfigurationView.xaml
+    /// Interaction logic for ConfigurationPage.xaml
     /// </summary>
-    public partial class ConfigurationView : UserControl
+    public partial class ConfigurationPage : Page
     {
-        public ConfigurationView()
+        public ConfigurationPage()
         {
             InitializeComponent();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                this.NavigationService.Navigate(new HomePage());
+            }
         }
     }
 }

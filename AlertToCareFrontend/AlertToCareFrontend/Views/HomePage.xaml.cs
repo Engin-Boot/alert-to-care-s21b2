@@ -16,23 +16,23 @@ using System.Windows.Shapes;
 namespace AlertToCareFrontend.Views
 {
     /// <summary>
-    /// Interaction logic for Home.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class HomePage : Page
     {
-        public Home()
+        public HomePage()
         {
             InitializeComponent();
         }
 
-        private void MonitorIcuButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ConfigureButton_Click(object sender, RoutedEventArgs e)
         {
+            this.NavigationService.Navigate(new ConfigurationPage());
+        }
 
+        private void MonitorIcuButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new MonitorIcuPage());
         }
     }
 }

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\App.xaml
-6-1280178526
+62103584150
 
-11-570466371
+11-1840788832
 13-1505183044
-MainWindow.xaml;Views\ConfigurationView.xaml;Views\HomeView.xaml;Views\MonitorIcuView.xaml;Resources\styles\ConfigurationPageStyles.xaml;Resources\styles\MainWindowStyles.xaml;
+MainWindow.xaml;Views\ConfigurationPage.xaml;Views\HomePage.xaml;Views\MonitorIcuPage.xaml;Resources\styles\ConfigurationPageStyles.xaml;Resources\styles\MainWindowStyles.xaml;
 
 False
 

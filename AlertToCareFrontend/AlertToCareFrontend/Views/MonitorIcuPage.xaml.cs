@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlertToCareFrontend.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,21 +14,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AlertToCareFrontend.Views
+namespace AlertToCareFrontend
 {
     /// <summary>
-    /// Interaction logic for MonitorIcu.xaml
+    /// Interaction logic for MonitorIcuPage.xaml
     /// </summary>
-    public partial class MonitorIcu : UserControl
+    public partial class MonitorIcuPage : Page
     {
-        public MonitorIcu()
+        public MonitorIcuPage()
         {
             InitializeComponent();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if(this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                this.NavigationService.Navigate(new HomePage());
+            }
         }
     }
 }

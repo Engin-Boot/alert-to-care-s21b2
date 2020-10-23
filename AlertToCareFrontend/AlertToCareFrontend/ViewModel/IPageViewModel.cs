@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace AlertToCareFrontend.ViewModel
 {
-    class ConfigurationViewModel
+    interface IPageViewModel
     {
-        
     }
 }
