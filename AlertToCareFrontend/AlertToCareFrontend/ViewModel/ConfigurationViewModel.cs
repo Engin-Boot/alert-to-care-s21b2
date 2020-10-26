@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ namespace AlertToCareFrontend.ViewModel
     class ConfigurationViewModel:BaseViewModel
     {
         #region Fields
-        Models.IcuDataModel icuDataModel;
+        IcuDataModel icuDataModel;
         ObservableCollection<string> layouts;
         string message;
         #endregion
@@ -27,11 +26,9 @@ namespace AlertToCareFrontend.ViewModel
                 "Parallel"
             };
 
-            icuDataModel = new Models.IcuDataModel();
+            icuDataModel = new IcuDataModel();
             
             AddIcuCommand = new Command.DelegateCommandClass(AddIcuWrapper, CanExecuteWrapper);
-
-            UpdateIcuCommand = new Command.DelegateCommandClass(UpdateIcuWrapper, CanExecuteWrapper);
 
         }
         #endregion
@@ -99,24 +96,87 @@ namespace AlertToCareFrontend.ViewModel
         #endregion
 
         #region Logic
-        public async void AddIcu()
+        private void AddBeds(IcuDataModel icu)
+        {
+            for (int bedIndex = 1; bedIndex <= icu.TotalNoOfBeds; bedIndex++)
+            {
+                // Add new bed
+                string bedId = icu.IcuId + "Bed" + bedIndex;
+                BedDataModel bed = new BedDataModel(bedId);
+                _ = PostBedData(bed);
+            }
+        }
+        
+        public void AddIcu()
         {
             // Logic to call backend api to add icu details
             IcuDataModel newIcu = new IcuDataModel(IcuId, TotalNoOfBeds, Layout);
 
-            IcuDataModel response = await PostOrPutIcuData(newIcu, true);
+            IcuDataModel savedIcuData = PostIcuData(newIcu).Result;
+
+            // Update settings
+            Properties.Settings.Default.currentIcuId = savedIcuData.IcuId;
+            Properties.Settings.Default.Save();
+
+            // Add beds for icu
+            AddBeds(savedIcuData);
+
             // Set success/failure message
-            if (!String.IsNullOrEmpty(response.IcuId))
-            {
-                Message = "Add request successful: " + response.IcuId + ", " + response.TotalNoOfBeds.ToString() + ", " + response.Layout;
-            }
-            else
-            {
-                Message = "Add request failed!";
-            }
+            Message = String.IsNullOrEmpty(savedIcuData.IcuId) ? "ICU Configuration failed!" : "ICU Configuration successful!";
         }
 
-        public static async Task<IcuDataModel> PostOrPutIcuData(IcuDataModel requestObj, bool isPostRequest)
+        public static async Task<BedDataModel> PostBedData(BedDataModel requestObj)
+        {
+            // Initialization.  
+            BedDataModel responseObj = new BedDataModel();
+
+            try
+            {
+                // Posting.  
+                using (var client = new HttpClient())
+                {
+                    // Setting Base address.  
+                    client.BaseAddress = new Uri("http://localhost:5000/");
+
+                    // Setting content type.  
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    // Setting timeout.  
+                    client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                    // Initialization.  
+                    HttpResponseMessage response = new HttpResponseMessage();
+
+                    // HTTP POST  
+                    response = await client.PostAsJsonAsync("api/BedData/", requestObj).ConfigureAwait(false);
+                    
+                    // Verification  
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reading Response.  
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        responseObj = JsonConvert.DeserializeObject<BedDataModel>(result);
+
+                        // Releasing.  
+                        response.Dispose();
+                    }
+                    else
+                    {
+                        // Reading Response.  
+                        string result = response.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return responseObj;
+        }
+
+        public static async Task<IcuDataModel> PostIcuData(IcuDataModel requestObj)
         {
             // Initialization.  
             IcuDataModel responseObj = new IcuDataModel();
@@ -140,10 +200,7 @@ namespace AlertToCareFrontend.ViewModel
                     HttpResponseMessage response = new HttpResponseMessage();
 
                     // HTTP POST  
-                    if (isPostRequest)
-                        response = await client.PostAsJsonAsync("api/IcuData/", requestObj).ConfigureAwait(false);
-                    else
-                        response = await client.PutAsJsonAsync("api/IcuData/" + requestObj.IcuId, requestObj).ConfigureAwait(false);
+                    response = await client.PostAsJsonAsync("api/IcuData/", requestObj).ConfigureAwait(false);
 
                     // Verification  
                     if (response.IsSuccessStatusCode)
@@ -169,22 +226,6 @@ namespace AlertToCareFrontend.ViewModel
 
             return responseObj;
         }
-        public async void UpdateIcu()
-        {
-            // Logic to call backend api to update icu details
-            IcuDataModel newIcu = new IcuDataModel(IcuId, TotalNoOfBeds, Layout);
-            
-            IcuDataModel response = await PostOrPutIcuData(newIcu, false);
-            // Set success/failure message
-            if (!String.IsNullOrEmpty(response.IcuId))
-            {
-                Message = "Update request successful: " + response.IcuId + ", " + response.TotalNoOfBeds.ToString() + ", " + response.Layout;
-            }
-            else
-            {
-                Message = "Update request failed!";
-            }
-        }
         #endregion
         #region Commands
         public ICommand AddIcuCommand
@@ -192,21 +233,13 @@ namespace AlertToCareFrontend.ViewModel
             get;
             set;
         }
-        public ICommand UpdateIcuCommand
-        {
-            get;
-            set;
-        }
+        
         #endregion
 
         #region Command helper Methods
         void AddIcuWrapper(object parameter)
         {
             this.AddIcu();
-        }
-        void UpdateIcuWrapper(object parameter)
-        {
-            this.UpdateIcu();
         }
         bool CanExecuteWrapper(object parameter)
         {

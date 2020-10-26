@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AlertToCareFrontend.Models;
+using AlertToCareFrontend.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,11 @@ namespace AlertToCareFrontend.Views
     /// </summary>
     public partial class BedView : UserControl
     {
-        public BedView()
+        public BedView(BedDataModel bed)
         {
             InitializeComponent();
+            DataContext = new BedViewModel(bed);
+
         }
     }
 }

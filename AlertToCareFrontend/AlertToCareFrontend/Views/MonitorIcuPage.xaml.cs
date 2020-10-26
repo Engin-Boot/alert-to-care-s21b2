@@ -1,4 +1,6 @@
-﻿using AlertToCareFrontend.Views;
+﻿using AlertToCareFrontend.Models;
+using AlertToCareFrontend.ViewModel;
+using AlertToCareFrontend.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +27,27 @@ namespace AlertToCareFrontend
         {
             InitializeComponent();
 
-            BedView bed = new BedView();
-            topStackPanel.Children.Add(bed);
+            MonitorIcuViewModel viewModel = new MonitorIcuViewModel();
+            DataContext = viewModel;
+
+            int count = viewModel.BedDataModelList.Count;
+            int bedNum = 1;
+
+            foreach (BedDataModel bedDataModel in viewModel.BedDataModelList)
+            {
+                BedView bed = new BedView(bedDataModel);
+                
+                if(bedNum <= count/2)
+                {
+                    leftStackPanel.Children.Add(bed);
+                }
+                else
+                {
+                    bottomStackPanel.Children.Add(bed);
+                }
+                bedNum++;
+            }
+
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

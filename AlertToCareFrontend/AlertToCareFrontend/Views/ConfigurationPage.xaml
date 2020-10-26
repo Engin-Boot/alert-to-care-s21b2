@@ -11,12 +11,6 @@
         <viewmodels:ConfigurationViewModel></viewmodels:ConfigurationViewModel>
     </Page.DataContext>
     <DockPanel LastChildFill="True">
-        <Button Style="{StaticResource ResourceKey=homeButtonStyle}" Click="BackButton_Click" DockPanel.Dock="Top" HorizontalAlignment="Left">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="../Resources/icons/home.png" Width="20" Height="20"></Image>
-                <TextBlock Text="Back to home" FontSize="12" VerticalAlignment="Center"></TextBlock>
-            </StackPanel>
-        </Button>
         <TextBlock Text="Configure ICU" Style="{StaticResource ResourceKey=headingStyle}" DockPanel.Dock="Top"></TextBlock>
         <Grid HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="20">
             <Grid.RowDefinitions>
@@ -33,14 +27,20 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Id</TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Number of beds</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Layout</TextBlock>
-                <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource ResourceKey=standardButtonStyle}" Command="{Binding AddIcuCommand}">Add New ICU</Button>
-
+                
                 <TextBox Text="{Binding Path=IcuId}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
                 <TextBox Text="{Binding Path=TotalNoOfBeds}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                <ComboBox ItemsSource="{Binding Path=Layouts}" SelectedItem="{Binding Path=Layout}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=comboBoxStyle}">
-                    
-                </ComboBox>
-                <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=standardButtonStyle}" Command="{Binding UpdateIcuCommand}">Update Existing ICU</Button>
+                <ComboBox ItemsSource="{Binding Path=Layouts}" SelectedItem="{Binding Path=Layout}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=comboBoxStyle}"></ComboBox>
+
+                <Button Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click" Grid.Row="3" Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/icons/home.png" Width="20" Height="20"></Image>
+                        <TextBlock Text="Back to home" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=standardButtonStyle}" Command="{Binding AddIcuCommand}">Configure ICU</Button>
+
             </Grid.Children>
         </Grid>
         <TextBlock Text="{Binding Path=Message}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"></TextBlock>

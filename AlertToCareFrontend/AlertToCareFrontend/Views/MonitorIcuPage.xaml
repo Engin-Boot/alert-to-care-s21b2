@@ -6,17 +6,24 @@
       xmlns:local="clr-namespace:AlertToCareFrontend"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Height="auto"
+      Width="auto"
       Title="MonitorIcuPage">
-
+    
     <DockPanel LastChildFill="True">
-        <Button Style="{StaticResource ResourceKey=homeButtonStyle}" Click="BackButton_Click" DockPanel.Dock="Top" HorizontalAlignment="Left">
+        <Button Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click" DockPanel.Dock="Top" HorizontalAlignment="Left">
             <StackPanel Orientation="Horizontal">
                 <Image Source="../Resources/icons/home.png" Width="20" Height="20"></Image>
                 <TextBlock Text="Back to home" FontSize="12" VerticalAlignment="Center"></TextBlock>
             </StackPanel>
         </Button>
-        <StackPanel x:Name="topStackPanel" DockPanel.Dock="Top">
-            
+        <StackPanel x:Name="leftStackPanel" DockPanel.Dock="Left" Orientation="Vertical">
+        </StackPanel>
+        <StackPanel x:Name="bottomStackPanel" DockPanel.Dock="Bottom" Orientation="Horizontal">
+        </StackPanel>
+        <StackPanel x:Name="rightStackPanel" DockPanel.Dock="Right">
+
         </StackPanel>
     </DockPanel>
+    
 </Page>
