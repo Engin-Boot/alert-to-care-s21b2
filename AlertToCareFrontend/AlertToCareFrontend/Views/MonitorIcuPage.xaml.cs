@@ -30,24 +30,50 @@ namespace AlertToCareFrontend
             MonitorIcuViewModel viewModel = new MonitorIcuViewModel();
             DataContext = viewModel;
 
-            int count = viewModel.BedDataModelList.Count;
+            int totalNoOfBeds = viewModel.BedDataModelList.Count;
             int bedNum = 1;
+            string layout = viewModel.IcuLayout;
 
             foreach (BedDataModel bedDataModel in viewModel.BedDataModelList)
             {
-                BedView bed = new BedView(bedDataModel);
+                PositionBedAsPerIcuLayout(bedDataModel, bedNum, totalNoOfBeds, layout);
                 
-                if(bedNum <= count/2)
+                bedNum++;
+            }
+
+            // Register the Bubble Event Handler 
+            AddHandler(BedView.AdmitButtonClickedEvent,
+                new RoutedEventHandler(AdmitButtonClickedEvent_Handler));
+        }
+
+        private void AdmitButtonClickedEvent_Handler(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            BedView bed = e.Source as BedView;
+            BedViewModel bedViewModel = bed.DataContext as BedViewModel;
+            string bedId = bedViewModel.BedId;
+            this.NavigationService.Navigate(new AdmitPatientPage(bedId));
+        }
+
+        private void PositionBedAsPerIcuLayout(BedDataModel bedDataModel, int bedNum, int totalNumOfBeds, string layout)
+        {
+            BedView bed = new BedView(bedDataModel);
+
+            if (bedNum <= totalNumOfBeds / 2)
+            {
+                leftStackPanel.Children.Add(bed);
+            }
+            else
+            {
+                if (layout.Equals("Parallel"))
                 {
-                    leftStackPanel.Children.Add(bed);
+                    rightStackPanel.Children.Add(bed);
                 }
                 else
                 {
                     bottomStackPanel.Children.Add(bed);
                 }
-                bedNum++;
             }
-
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

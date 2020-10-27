@@ -69,11 +69,15 @@
     <Compile Include="Models\BedDataModel.cs" />
     <Compile Include="Models\IcuDataModel.cs" />
     <Compile Include="Models\PatientDataModel.cs" />
+    <Compile Include="ViewModel\AdmitPatientViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BedViewModel.cs" />
     <Compile Include="ViewModel\ConfigurationViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MonitorIcuViewModel.cs" />
+    <Compile Include="Views\AdmitPatientPage.xaml.cs">
+      <DependentUpon>AdmitPatientPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BedView.xaml.cs">
       <DependentUpon>BedView.xaml</DependentUpon>
     </Compile>
@@ -100,6 +104,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\styles\BedStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdmitPatientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

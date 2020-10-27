@@ -32,7 +32,7 @@
             <TextBlock Text="{Binding Path=BedId, Mode=OneWay, Converter={StaticResource ResourceKey=bedIdRef}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Row="1" Grid.Column="0"></TextBlock>
             <Button Content="Check Vitals" IsEnabled="{Binding Path=BedStatus, Mode=OneWay}" Style="{StaticResource ResourceKey=bedButtonStyle}" Grid.Row="1" Grid.Column="1"></Button>
 
-            <Button x:Name="AdmitPatientBtn" IsEnabled="{Binding Path=BedStatus, Mode=OneWay, Converter={StaticResource ResourceKey=admitStatusRef}}" Content="Admit Patient" Style="{StaticResource ResourceKey=bedButtonStyle}" Grid.Row="2" Grid.Column="0"></Button>
+            <Button x:Name="AdmitPatientBtn" IsEnabled="{Binding Path=BedStatus, Mode=OneWay, Converter={StaticResource ResourceKey=admitStatusRef}}" Content="Admit Patient" Style="{StaticResource ResourceKey=bedButtonStyle}" Grid.Row="2" Grid.Column="0" Click="AdmitPatientButton_Click"></Button>
             <Button Content="Discharge Patient" IsEnabled="{Binding Path=BedStatus, Mode=OneWay}" Style="{StaticResource ResourceKey=bedButtonStyle}" Grid.Row="2" Grid.Column="1"></Button>
 
             <Button Content="Stop Alert" IsEnabled="{Binding Path=AlertMessage, Mode=OneWay, Converter={StaticResource ResourceKey=stopAlertRef}}" Style="{StaticResource ResourceKey=bedButtonStyle}" Grid.Row="3" Grid.Column="0"></Button>

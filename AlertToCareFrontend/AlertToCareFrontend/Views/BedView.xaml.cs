@@ -28,5 +28,25 @@ namespace AlertToCareFrontend.Views
             DataContext = new BedViewModel(bed);
 
         }
+        // This defines the custom event
+        public static readonly RoutedEvent AdmitButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "AdmitButtonClicked", // Event name
+            RoutingStrategy.Bubble, // Bubble means the event will bubble up through the tree
+            typeof(RoutedEventHandler), // The event type
+            typeof(BedView)); // Belongs to BedView
+                              
+        // Allows add and remove of event handlers to handle the custom event
+        public event RoutedEventHandler AdmitButtonClicked
+        {
+            add { AddHandler(AdmitButtonClickedEvent, value); }
+            remove { RemoveHandler(AdmitButtonClickedEvent, value); }
+        }
+
+        private void AdmitPatientButton_Click(object sender, RoutedEventArgs e)
+        {
+            // This actually raises the custom event
+            var newEventArgs = new RoutedEventArgs(AdmitButtonClickedEvent);
+            RaiseEvent(newEventArgs);
+        }
     }
 }

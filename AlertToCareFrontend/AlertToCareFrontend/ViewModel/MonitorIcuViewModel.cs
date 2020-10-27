@@ -20,14 +20,78 @@ namespace AlertToCareFrontend.ViewModel
         public MonitorIcuViewModel()
         {
             GetAllBedsForIcu();
+            GetIcuLayout();
         }
         #endregion
 
         #region Properties
         public ObservableCollection<BedDataModel> BedDataModelList { get; set; } = new ObservableCollection<BedDataModel>();
+
+        public string IcuLayout { get; set; }
         #endregion
 
         #region Logic
+
+        private void GetIcuLayout()
+        {
+            string icuId = Properties.Settings.Default.currentIcuId;
+
+            if (icuId != null)
+                IcuLayout = GetLayout(icuId).Result;
+        }
+
+        private static async Task<string> GetLayout(string icuId)
+        {
+            // Initialization.  
+            string responseObj = "";
+
+            try
+            {
+                // Posting.  
+                using (var client = new HttpClient())
+                {
+                    // Setting Base address.  
+                    client.BaseAddress = new Uri("http://localhost:5000/");
+
+                    // Setting content type.  
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    // Setting timeout.  
+                    client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                    // Initialization.  
+                    HttpResponseMessage response = new HttpResponseMessage();
+
+                    // HTTP GET
+                    var url = "api/IcuData/GetLayout/" + icuId;
+                    response = await client.GetAsync(url).ConfigureAwait(false);
+
+                    // Verification  
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reading Response.  
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        responseObj = JsonConvert.DeserializeObject<string>(result);
+
+                        // Releasing.  
+                        response.Dispose();
+                    }
+                    else
+                    {
+                        // Reading Response.  
+                        string result = response.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return responseObj;
+        }
+
 
         private int GetBedNumFromBedId(string bedId)
         {

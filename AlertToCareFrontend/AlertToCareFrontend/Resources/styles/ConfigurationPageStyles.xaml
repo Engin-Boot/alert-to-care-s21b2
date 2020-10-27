@@ -11,11 +11,12 @@
     </Style>
     <Style x:Key="headingStyle" TargetType="TextBlock">
         <Style.Setters>
-            <Setter Property="Width" Value="150"></Setter>
+            <Setter Property="Width" Value="250"></Setter>
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
             <Setter Property="Margin" Value="20"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
         </Style.Setters>
     </Style>
     <Style x:Key="textboxStyle" TargetType="TextBox">
