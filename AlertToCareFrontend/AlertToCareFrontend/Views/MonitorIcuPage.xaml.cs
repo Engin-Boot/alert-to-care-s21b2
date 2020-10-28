@@ -44,6 +44,9 @@ namespace AlertToCareFrontend
             // Register the Bubble Event Handler 
             AddHandler(BedView.AdmitButtonClickedEvent,
                 new RoutedEventHandler(AdmitButtonClickedEvent_Handler));
+
+            AddHandler(BedView.UpdateVitalsButtonClickedEvent,
+                new RoutedEventHandler(UpdateVitalsButtonClickedEvent_Handler));
         }
 
         private void AdmitButtonClickedEvent_Handler(object sender, RoutedEventArgs e)
@@ -52,7 +55,16 @@ namespace AlertToCareFrontend
             BedView bed = e.Source as BedView;
             BedViewModel bedViewModel = bed.DataContext as BedViewModel;
             string bedId = bedViewModel.BedId;
-            this.NavigationService.Navigate(new AdmitPatientPage(bedId));
+            NavigationService.Navigate(new AdmitPatientPage(bedId));
+        }
+        private void UpdateVitalsButtonClickedEvent_Handler(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            BedView bed = e.Source as BedView;
+            BedViewModel bedViewModel = bed.DataContext as BedViewModel;
+            string bedId = bedViewModel.BedId;
+            string patientId = bedViewModel.PatientId;
+            NavigationService.Navigate(new UpdateVitalsPage(patientId, bedId));
         }
 
         private void PositionBedAsPerIcuLayout(BedDataModel bedDataModel, int bedNum, int totalNumOfBeds, string layout)

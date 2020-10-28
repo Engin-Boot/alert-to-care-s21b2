@@ -69,12 +69,16 @@
     <Compile Include="Models\BedDataModel.cs" />
     <Compile Include="Models\IcuDataModel.cs" />
     <Compile Include="Models\PatientDataModel.cs" />
+    <Compile Include="Models\VitalsDataModel.cs" />
+    <Compile Include="ValidationRules\TotalNoOfBedsValidationRules.cs" />
+    <Compile Include="ValidationRules\IdValidationRules.cs" />
     <Compile Include="ViewModel\AdmitPatientViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BedViewModel.cs" />
     <Compile Include="ViewModel\ConfigurationViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MonitorIcuViewModel.cs" />
+    <Compile Include="ViewModel\UpdateVitalsViewModel.cs" />
     <Compile Include="Views\AdmitPatientPage.xaml.cs">
       <DependentUpon>AdmitPatientPage.xaml</DependentUpon>
     </Compile>
@@ -90,6 +94,9 @@
     </Compile>
     <Compile Include="Views\MonitorIcuPage.xaml.cs">
       <DependentUpon>MonitorIcuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpdateVitalsPage.xaml.cs">
+      <DependentUpon>UpdateVitalsPage.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\styles\MainWindowStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateVitalsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,6 +4,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:viewmodels="clr-namespace:AlertToCareFrontend.ViewModel"
+      xmlns:validationrules="clr-namespace:AlertToCareFrontend.ValidationRules"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ConfigurationPage">
@@ -27,9 +28,25 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Id</TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Number of beds</TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Layout</TextBlock>
-                
-                <TextBox Text="{Binding Path=IcuId}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                <TextBox Text="{Binding Path=TotalNoOfBeds}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+
+                <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=errorFeedbackStyle}">
+                    <TextBox.Text>
+                        <Binding Path="IcuId" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <validationrules:IdValidationRules ValidatesOnTargetUpdated="True"></validationrules:IdValidationRules>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=errorFeedbackStyle}">
+                    <TextBox.Text>
+                        <Binding Path="TotalNoOfBeds" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <validationrules:TotalNoOfBedsValidationRules ValidatesOnTargetUpdated="True"></validationrules:TotalNoOfBedsValidationRules>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <ComboBox ItemsSource="{Binding Path=Layouts}" SelectedItem="{Binding Path=Layout}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=comboBoxStyle}"></ComboBox>
 
                 <Button Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click" Grid.Row="3" Grid.Column="0">

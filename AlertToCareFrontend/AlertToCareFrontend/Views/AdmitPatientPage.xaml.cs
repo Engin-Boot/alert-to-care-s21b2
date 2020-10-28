@@ -27,5 +27,16 @@ namespace AlertToCareFrontend.Views
                 this.NavigationService.Navigate(new MonitorIcuPage());
             }
         }
+
+        private void AdmitPatientButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdmitPatientViewModel viewModel = (DataContext as AdmitPatientViewModel);
+            if (viewModel.AdmitNewPatientCommand.CanExecute(null))
+            {
+                viewModel.AdmitNewPatientCommand.Execute(null);
+                
+                NavigationService.Navigate(new MonitorIcuPage());
+            }
+        }
     }
 }

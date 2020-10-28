@@ -27,7 +27,8 @@ namespace AlertToCareFrontend.ViewModel
             };
 
             icuDataModel = new IcuDataModel();
-            
+            Layout = Layouts[0];
+
             AddIcuCommand = new Command.DelegateCommandClass(AddIcuWrapper, CanExecuteWrapper);
 
         }

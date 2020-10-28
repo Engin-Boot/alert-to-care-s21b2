@@ -7,66 +7,43 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AdmitPatientPage">
-    <DockPanel LastChildFill="True">
-        <Button Content="Back" Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click" DockPanel.Dock="Top" HorizontalAlignment="Left"></Button>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
-            <StackPanel Margin="0 0 50 0">
-            <TextBlock Text="Admit New Patient" Style="{StaticResource ResourceKey=headingStyle}"></TextBlock>
-            <Grid DockPanel.Dock="Left" Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.Children>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Id</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Name</TextBlock>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Age</TextBlock>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Email</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Contact Number</TextBlock>
-                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Address</TextBlock>
+    <DockPanel LastChildFill="True" HorizontalAlignment="Center">
+        <StackPanel Margin="0 0 50 0" DockPanel.Dock="Top">
+                <TextBlock Text="Admit New Patient" Style="{StaticResource ResourceKey=headingStyle}"></TextBlock>
+                <Grid DockPanel.Dock="Left" Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Children>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Id</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Name</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Age</TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Email</TextBlock>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Contact Number</TextBlock>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Address</TextBlock>
 
-                    <TextBox Text="{Binding Path=PatientId, Mode=OneWayToSource}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                    <TextBox Text="{Binding Path=PatientName, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                    <TextBox Text="{Binding Path=PatientAge, Mode=OneWayToSource}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                    <TextBox Text="{Binding Path=Email, Mode=OneWayToSource}" Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                    <TextBox Text="{Binding Path=ContactNo, Mode=OneWayToSource}" Grid.Row="4" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                    <TextBox Text="{Binding Path=Address, Mode=OneWayToSource}" Grid.Row="5" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=PatientId, Mode=OneWayToSource}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=PatientName, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=PatientAge, Mode=OneWayToSource}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=Email, Mode=OneWayToSource}" Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=ContactNo, Mode=OneWayToSource}" Grid.Row="4" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Text="{Binding Path=Address, Mode=OneWayToSource}" Grid.Row="5" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
 
-                    <Button Grid.Row="6" Grid.Column="1" Command="{Binding AdmitNewPatientCommand}" Style="{StaticResource ResourceKey=standardButtonStyle}">Admit</Button>
-
-                </Grid.Children>
-            </Grid>
+                        <Button Grid.Row="6" Grid.Column="0" Content="Back" Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click"></Button>
+                        <Button Grid.Row="6" Grid.Column="1" Click="AdmitPatientButton_Click" Style="{StaticResource ResourceKey=standardButtonStyle}">Admit Patient</Button>
+                    </Grid.Children>
+                </Grid>
             </StackPanel>
-
-            <StackPanel>
-                <TextBlock Text="Admit Existing Patient" Style="{StaticResource ResourceKey=headingStyle}"></TextBlock>
-            <Grid DockPanel.Dock="Right" Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.Children>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}" TextAlignment="Center">Patient Id</TextBlock>
-                    <TextBox Text="{Binding Path=PatientId}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-
-                    <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Command="{Binding Path=AdmitExistingPatientCommand}" Style="{StaticResource ResourceKey=standardButtonStyle}">Admit</Button>
-
-                </Grid.Children>
-            </Grid>
-            </StackPanel>
-        </StackPanel>
+        <TextBlock Text="{Binding Path=Message}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"></TextBlock>
     </DockPanel>
 </Page>

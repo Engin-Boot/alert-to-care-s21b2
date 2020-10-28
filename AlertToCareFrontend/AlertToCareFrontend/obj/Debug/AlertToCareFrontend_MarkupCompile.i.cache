@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Tripti Saini\philips\bootcamp\case-study-2\alert-to-care-s21b2\AlertToCareFrontend\AlertToCareFrontend\App.xaml
-92076398829
+10940195051
 
-251772768648
+301842844017
 15-411047437
-MainWindow.xaml;Resources\styles\BedStyles.xaml;Views\AdmitPatientPage.xaml;Views\BedView.xaml;Views\ConfigurationPage.xaml;Views\HomePage.xaml;Views\MonitorIcuPage.xaml;Resources\styles\ConfigurationPageStyles.xaml;Resources\styles\MainWindowStyles.xaml;
+MainWindow.xaml;Resources\styles\BedStyles.xaml;Views\AdmitPatientPage.xaml;Views\BedView.xaml;Views\ConfigurationPage.xaml;Views\HomePage.xaml;Views\MonitorIcuPage.xaml;Resources\styles\ConfigurationPageStyles.xaml;Resources\styles\MainWindowStyles.xaml;Views\UpdateVitalsPage.xaml;
 
 True
 

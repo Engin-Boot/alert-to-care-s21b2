@@ -47,4 +47,22 @@
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style.Setters>
     </Style>
+    <Style x:Key="errorFeedbackStyle" BasedOn="{StaticResource ResourceKey=textboxStyle}" TargetType="TextBox">
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Trigger.Setters>
+                    <Setter Property="Validation.ErrorTemplate">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <AdornedElementPlaceholder x:Name="controlHolder"></AdornedElementPlaceholder>
+                                    <TextBlock VerticalAlignment="Center" Foreground="Red" Text="{Binding ElementName=controlHolder,Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"></TextBlock>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

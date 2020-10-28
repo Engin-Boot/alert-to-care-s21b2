@@ -29,5 +29,12 @@
             PatientId = bed.PatientId;
             IcuId = bed.IcuId;
         }
+        public BedDataModel(string bedId, bool status, string patientId)
+        {
+            BedId = bedId;
+            BedStatus = status;
+            PatientId = patientId;
+            IcuId = Properties.Settings.Default.currentIcuId;
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using AlertToCareFrontend.Models;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -14,6 +14,7 @@ namespace AlertToCareFrontend.ViewModel
         BedDataModel bedDataModel;
         string message;
         string alertMessage;
+        string alertMessageHistory;
         #endregion
 
         #region Initializers
@@ -24,12 +25,15 @@ namespace AlertToCareFrontend.ViewModel
             bedDataModel = bed;
 
             AlertMessage = "";
-
-            AddBedCommand = new Command.DelegateCommandClass(AddBedWrapper, CanExecuteWrapper);
+            AlertMessageHistory = "";
 
             CheckPatientVitalsCommand = new Command.DelegateCommandClass(CheckPatientVitalsWrapper, CanExecuteWrapper);
 
             DischargePatientCommand = new Command.DelegateCommandClass(DischargePatientWrapper, CanExecuteWrapper);
+
+            StopAlertCommand = new Command.DelegateCommandClass(StopAlertWrapper, CanExecuteWrapper);
+
+            UndoAlertCommand = new Command.DelegateCommandClass(UndoAlertWrapper, CanExecuteWrapper);
 
         }
         #endregion
@@ -109,33 +113,234 @@ namespace AlertToCareFrontend.ViewModel
                 }
             }
         }
+        public string AlertMessageHistory
+        {
+            get { return alertMessageHistory; }
+            set
+            {
+                if (value != alertMessageHistory)
+                {
+                    alertMessageHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         #endregion
 
         #region Logic
 
-        void AddBed()
+        public static async Task<PatientDataModel> DeletePatientData(string patientId)
         {
+            PatientDataModel responseObj = new PatientDataModel();
+            using (var client = new HttpClient())
+            {
+                // Setting Base address.  
+                client.BaseAddress = new Uri("http://localhost:5000/");
 
+                // Setting content type.  
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Setting timeout.  
+                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                // Initialization.  
+                HttpResponseMessage response = new HttpResponseMessage();
+
+                response = await client.DeleteAsync("api/PatientData/" + patientId).ConfigureAwait(false);
+
+                // Verification  
+                if (response.IsSuccessStatusCode)
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    responseObj = JsonConvert.DeserializeObject<PatientDataModel>(result);
+
+                    // Releasing.  
+                    response.Dispose();
+                }
+                else
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    throw new ArgumentException(result);
+                }
+            }
+
+            return responseObj;
         }
-        
+
+        public static async Task<VitalsDataModel> DeleteVitalsData(string patientId)
+        {
+            VitalsDataModel responseObj = new VitalsDataModel();
+            using (var client = new HttpClient())
+            {
+                // Setting Base address.  
+                client.BaseAddress = new Uri("http://localhost:5000/");
+
+                // Setting content type.  
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Setting timeout.  
+                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                // Initialization.  
+                HttpResponseMessage response = new HttpResponseMessage();
+
+                response = await client.DeleteAsync("api/VitalData/" + patientId).ConfigureAwait(false);
+
+                // Verification  
+                if (response.IsSuccessStatusCode)
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    responseObj = JsonConvert.DeserializeObject<VitalsDataModel>(result);
+
+                    // Releasing.  
+                    response.Dispose();
+                }
+                else
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    throw new ArgumentException(result);
+                }
+            }
+
+            return responseObj;
+        }
+
+        public static async Task<BedDataModel> PutBedData(BedDataModel requestObj)
+        {
+            // Initialization.  
+            BedDataModel responseObj = new BedDataModel();
+
+            // Posting.  
+            using (var client = new HttpClient())
+            {
+                // Setting Base address.  
+                client.BaseAddress = new Uri("http://localhost:5000/");
+
+                // Setting content type.  
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Setting timeout.  
+                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                // Initialization.  
+                HttpResponseMessage response = new HttpResponseMessage();
+ 
+                response = await client.PutAsJsonAsync("api/BedData/" + requestObj.BedId, requestObj).ConfigureAwait(false);
+
+                // Verification  
+                if (response.IsSuccessStatusCode)
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    responseObj = JsonConvert.DeserializeObject<BedDataModel>(result);
+
+                    // Releasing.  
+                    response.Dispose();
+                }
+                else
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    throw new ArgumentException(result);
+                }
+            }
+
+            return responseObj;
+        }
+
+        public static async Task<string> CheckVitalAndAlert(string patientId)
+        {
+            string responseObj = "";
+            using (var client = new HttpClient())
+            {
+                // Setting Base address.  
+                client.BaseAddress = new Uri("http://localhost:5000/");
+
+                // Setting content type.  
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Setting timeout.  
+                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                // Initialization.  
+                HttpResponseMessage response = new HttpResponseMessage();
+
+                response = await client.GetAsync("api/VitalData/CheckVitalAndAlert/" + patientId).ConfigureAwait(false);
+
+                // Verification  
+                if (response.IsSuccessStatusCode)
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    responseObj = JsonConvert.DeserializeObject<string>(result);
+
+                    // Releasing.  
+                    response.Dispose();
+                }
+                else
+                {
+                    // Reading Response.  
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    throw new ArgumentException(result);
+                }
+            }
+
+            return responseObj;
+        }
+
         void CheckPatientVitals()
         {
-
+            try
+            {
+                AlertMessage = CheckVitalAndAlert(bedDataModel.PatientId).Result;
+            }
+            catch(ArgumentException exception)
+            {
+                AlertMessage = exception.Message;
+            }
         }
         void DischargePatient()
         {
+            try
+            {
+                _ = DeletePatientData(bedDataModel.PatientId).Result;
+                _ = DeleteVitalsData(bedDataModel.PatientId).Result;
 
+                BedDataModel updatedBedData = new BedDataModel(bedDataModel.BedId, false, "");
+                _ = PutBedData(updatedBedData).Result;
+
+                PatientId = "";
+                BedStatus = false;
+            }
+            catch (ArgumentException exception)
+            {
+                Message = exception.Message;
+            }
         }
 
+        void StopAlert()
+        {
+            AlertMessageHistory = AlertMessage;
+            AlertMessage = "";
+        }
+
+        void UndoAlert()
+        {
+            AlertMessage = AlertMessageHistory;
+            AlertMessageHistory = "";
+        }
 
         #endregion
 
         #region Commands
-        public ICommand AddBedCommand
-        {
-            get;
-            set;
-        }
         public ICommand DischargePatientCommand
         {
             get;
@@ -146,15 +351,20 @@ namespace AlertToCareFrontend.ViewModel
             get;
             set;
         }
-
+        public ICommand StopAlertCommand
+        {
+            get;
+            set;
+        }
+        public ICommand UndoAlertCommand
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Command helper Methods
-        void AddBedWrapper(object parameter)
-        {
-            this.AddBed();
-        }
-        
+
         void DischargePatientWrapper(object parameter)
         {
             this.DischargePatient();
@@ -162,6 +372,14 @@ namespace AlertToCareFrontend.ViewModel
         void CheckPatientVitalsWrapper(object parameter)
         {
             this.CheckPatientVitals();
+        }
+        void StopAlertWrapper(object parameter)
+        {
+            this.StopAlert();
+        }
+        void UndoAlertWrapper(object parameter)
+        {
+            this.UndoAlert();
         }
         bool CanExecuteWrapper(object parameter)
         {

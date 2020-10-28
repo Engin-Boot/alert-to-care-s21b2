@@ -48,5 +48,23 @@ namespace AlertToCareFrontend.Views
             var newEventArgs = new RoutedEventArgs(AdmitButtonClickedEvent);
             RaiseEvent(newEventArgs);
         }
+
+        public static readonly RoutedEvent UpdateVitalsButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "UpdateVitalsButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(BedView));
+
+        public event RoutedEventHandler UpdateVitalsButtonClicked
+        {
+            add { AddHandler(UpdateVitalsButtonClickedEvent, value); }
+            remove { RemoveHandler(UpdateVitalsButtonClickedEvent, value); }
+        }
+
+        private void UpdateVitalsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newEventArgs = new RoutedEventArgs(UpdateVitalsButtonClickedEvent);
+            RaiseEvent(newEventArgs);
+        }
     }
 }
