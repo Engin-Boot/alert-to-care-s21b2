@@ -5,8 +5,8 @@ namespace AlertToCareFrontend.Command
 {
     public class DelegateCommandClass : ICommand
     {
-        Action<object> _executeMethodAddress;
-        Func<object, bool> _canExecuteMethodAddress;
+        readonly Action<object> _executeMethodAddress;
+        readonly Func<object, bool> _canExecuteMethodAddress;
 
         public DelegateCommandClass(Action<object> executeMethodAddress, Func<object, bool> canExecuteMethodAddress)
         {

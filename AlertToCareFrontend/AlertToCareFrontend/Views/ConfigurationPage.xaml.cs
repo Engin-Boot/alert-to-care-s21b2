@@ -1,13 +1,11 @@
-﻿using AlertToCareFrontend.Views;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
-namespace AlertToCareFrontend
+namespace AlertToCareFrontend.Views
 {
     /// <summary>
     /// Interaction logic for ConfigurationPage.xaml
     /// </summary>
-    public partial class ConfigurationPage : Page
+    public partial class ConfigurationPage
     {
         public ConfigurationPage()
         {
@@ -16,13 +14,17 @@ namespace AlertToCareFrontend
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService.CanGoBack)
+            if(NavigationService == null)
             {
-                this.NavigationService.GoBack();
+                return;
+            }
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
             }
             else
             {
-                this.NavigationService.Navigate(new HomePage());
+                NavigationService.Navigate(new HomePage());
             }
         }
     }

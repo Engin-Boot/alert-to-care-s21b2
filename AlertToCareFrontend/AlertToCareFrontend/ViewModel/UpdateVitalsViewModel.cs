@@ -1,9 +1,5 @@
 ﻿using AlertToCareFrontend.Models;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using AlertToCareFrontend.Utilities;
 using System.Windows.Input;
 
 namespace AlertToCareFrontend.ViewModel
@@ -11,14 +7,19 @@ namespace AlertToCareFrontend.ViewModel
     class UpdateVitalsViewModel:BaseViewModel
     {
         #region Fields
-        VitalsDataModel vitalsDataModel;
-        string message;
+        readonly VitalsDataModel _vitalsDataModel;
+        string _message;
         #endregion
 
         #region Intializer
         public UpdateVitalsViewModel(string patientId, string bedId)
         {
-            vitalsDataModel = new VitalsDataModel(patientId, bedId);
+            _vitalsDataModel = new VitalsDataModel(patientId, bedId);
+
+            VitalsDataModel responseObj = HttpClientUtility.GetVitalData(patientId).Result;
+            Bpm = responseObj.Bpm;
+            Spo2 = responseObj.Spo2;
+            RespRate = responseObj.RespRate;
 
             Message = "";
 
@@ -30,12 +31,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string PatientId
         {
-            get { return vitalsDataModel.PatientId; }
+            get => _vitalsDataModel.PatientId;
             set
             {
-                if (value != vitalsDataModel.PatientId)
+                if (value != _vitalsDataModel.PatientId)
                 {
-                    vitalsDataModel.PatientId = value;
+                    _vitalsDataModel.PatientId = value;
                     OnPropertyChanged();
                 }
             }
@@ -43,12 +44,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string PatientBedId
         {
-            get { return vitalsDataModel.PatientBedId; }
+            get => _vitalsDataModel.PatientBedId;
             set
             {
-                if (value != vitalsDataModel.PatientBedId)
+                if (value != _vitalsDataModel.PatientBedId)
                 {
-                    vitalsDataModel.PatientBedId = value;
+                    _vitalsDataModel.PatientBedId = value;
                     OnPropertyChanged();
                 }
             }
@@ -56,12 +57,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public float Bpm
         {
-            get { return vitalsDataModel.Bpm; }
+            get => _vitalsDataModel.Bpm;
             set
             {
-                if (value != vitalsDataModel.Bpm)
+                if (!value.Equals(_vitalsDataModel.Bpm))
                 {
-                    vitalsDataModel.Bpm = value;
+                    _vitalsDataModel.Bpm = value;
                     OnPropertyChanged();
                 }
             }
@@ -69,36 +70,36 @@ namespace AlertToCareFrontend.ViewModel
 
         public float Spo2
         {
-            get { return vitalsDataModel.Spo2; }
+            get => _vitalsDataModel.Spo2;
             set
             {
-                if (value != vitalsDataModel.Spo2)
+                if (!value.Equals(_vitalsDataModel.Spo2))
                 {
-                    vitalsDataModel.Spo2 = value;
+                    _vitalsDataModel.Spo2 = value;
                     OnPropertyChanged();
                 }
             }
         }
         public float RespRate
         {
-            get { return vitalsDataModel.RespRate; }
+            get => _vitalsDataModel.RespRate;
             set
             {
-                if (value != vitalsDataModel.RespRate)
+                if (!value.Equals(_vitalsDataModel.RespRate))
                 {
-                    vitalsDataModel.RespRate = value;
+                    _vitalsDataModel.RespRate = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string Message
         {
-            get { return message; }
+            get => _message;
             set
             {
-                if (value != message)
+                if (value != _message)
                 {
-                    message = value;
+                    _message = value;
                     OnPropertyChanged();
                 }
             }
@@ -109,60 +110,9 @@ namespace AlertToCareFrontend.ViewModel
         #region Logic
         void UpdateVitals()
         {
-            try
-            {
-                _ = PutVitalData(vitalsDataModel).Result;
-                Message = "Vitals update successful!";
-            }
-            catch(ArgumentException exception)
-            {
-                Message = exception.Message;
-            }
-        }
-        public static async Task<VitalsDataModel> PutVitalData(VitalsDataModel requestObj)
-        {
-            // Initialization.  
-            VitalsDataModel responseObj = new VitalsDataModel();
-
-            // Posting.  
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                response = await client.PutAsJsonAsync("api/VitalData/" + requestObj.PatientId, requestObj).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<VitalsDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
+            Message = HttpClientUtility.PutVitalData(_vitalsDataModel).Result;
+        }  
+        
         #endregion
 
         #region Commands

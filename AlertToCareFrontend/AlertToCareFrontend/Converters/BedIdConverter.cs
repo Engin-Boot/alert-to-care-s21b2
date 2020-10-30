@@ -8,12 +8,12 @@ namespace AlertToCareFrontend.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value!=null)
+            if (value != null)
             {
                 string bedId = value.ToString();
                 return bedId.Replace(Properties.Settings.Default.currentIcuId, "");
             }
-            return value;
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

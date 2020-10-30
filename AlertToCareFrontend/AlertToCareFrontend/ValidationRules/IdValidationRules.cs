@@ -8,7 +8,7 @@ namespace AlertToCareFrontend.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             string id = value as string;
-            return string.IsNullOrEmpty(id) ? new ValidationResult(false, "Id is required!") : new ValidationResult(true, "");
+            return string.IsNullOrEmpty(id) ? new ValidationResult(false, " * Required") : new ValidationResult(true, "");
         }
     }
 }

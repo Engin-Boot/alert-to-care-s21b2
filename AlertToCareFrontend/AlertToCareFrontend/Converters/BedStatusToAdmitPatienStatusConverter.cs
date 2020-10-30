@@ -8,7 +8,7 @@ namespace AlertToCareFrontend.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(bool.TryParse(value.ToString(), out bool valueFromSource))
+            if (value != null && bool.TryParse(value.ToString(), out bool valueFromSource))
             {
                 return !valueFromSource;
             }

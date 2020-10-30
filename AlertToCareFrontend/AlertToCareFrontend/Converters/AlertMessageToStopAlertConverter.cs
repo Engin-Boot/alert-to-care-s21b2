@@ -8,6 +8,10 @@ namespace AlertToCareFrontend.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return false;
+            }
             return !string.IsNullOrEmpty(value.ToString());       
         }
 

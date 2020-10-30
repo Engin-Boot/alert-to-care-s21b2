@@ -6,11 +6,11 @@ namespace AlertToCareFrontend.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName()] string propertyName = "")
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName()] string propertyName = "")
         {
-            if (this.PropertyChanged != null)
+            if (PropertyChanged != null)
             {
-                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
         }

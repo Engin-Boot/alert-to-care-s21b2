@@ -3,13 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AlertToCareFrontend.Views"
+      xmlns:validationrules="clr-namespace:AlertToCareFrontend.ValidationRules"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UpdateVitalsPage">
     <DockPanel LastChildFill="True" HorizontalAlignment="Center">
         <StackPanel Margin="0 0 50 0" DockPanel.Dock="Top">
-                <TextBlock Text="Update Vitals" Style="{StaticResource ResourceKey=headingStyle}"></TextBlock>
+                <TextBlock Text="Update Vitals" Style="{StaticResource ResourceKey=HeadingStyle}"></TextBlock>
                 <Grid DockPanel.Dock="Left" Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -22,16 +22,40 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.Children>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">BPM (70-150)</TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">SpO2 (90-100)</TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Resp Rate (30-95)</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">BPM (70-150)</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">SpO2 (90-100)</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Resp Rate (30-95)</TextBlock>
 
-                        <TextBox Text="{Binding Path=Bpm, Mode=OneWayToSource}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=Spo2, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=RespRate, Mode=OneWayToSource}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                            <Binding Path="Bpm" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <validationrules:VitalValueValidationRules ValidatesOnTargetUpdated="True"></validationrules:VitalValueValidationRules>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                            <Binding Path="Spo2" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validationrules:VitalValueValidationRules ValidatesOnTargetUpdated="True"></validationrules:VitalValueValidationRules>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        </TextBox>
+                        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                            <Binding Path="RespRate" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validationrules:VitalValueValidationRules ValidatesOnTargetUpdated="True"></validationrules:VitalValueValidationRules>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        </TextBox>
 
-                        <Button Grid.Row="3" Grid.Column="0" Content="Back" Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click"></Button>
-                    <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=UpdateVitalsCommand}" Style="{StaticResource ResourceKey=standardButtonStyle}">Update</Button>
+                        <Button Grid.Row="3" Grid.Column="0" Content="Back" Style="{StaticResource ResourceKey=StandardButtonStyle}" Click="BackButton_Click"></Button>
+                    <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=UpdateVitalsCommand}" Style="{StaticResource ResourceKey=StandardButtonStyle}">Update</Button>
                     </Grid.Children>
                 </Grid>
             </StackPanel>

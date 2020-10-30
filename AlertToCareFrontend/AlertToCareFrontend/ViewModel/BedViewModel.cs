@@ -1,9 +1,5 @@
 ﻿using AlertToCareFrontend.Models;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using AlertToCareFrontend.Utilities;
 using System.Windows.Input;
 
 namespace AlertToCareFrontend.ViewModel
@@ -11,18 +7,17 @@ namespace AlertToCareFrontend.ViewModel
     class BedViewModel:BaseViewModel
     {
         #region Fields
-        BedDataModel bedDataModel;
-        string message;
-        string alertMessage;
-        string alertMessageHistory;
+        readonly BedDataModel _bedDataModel;
+        string _message;
+        string _alertMessage;
+        string _alertMessageHistory;
         #endregion
 
         #region Initializers
 
         public BedViewModel(BedDataModel bed)
         {
-            //bedDataModel = new BedDataModel(ref bed);
-            bedDataModel = bed;
+            _bedDataModel = bed;
 
             AlertMessage = "";
             AlertMessageHistory = "";
@@ -41,36 +36,36 @@ namespace AlertToCareFrontend.ViewModel
         #region Properties
         public string BedId
         {
-            get { return bedDataModel.BedId; }
+            get => _bedDataModel.BedId;
             set
             {
-                if (value != bedDataModel.BedId)
+                if (value != _bedDataModel.BedId)
                 {
-                    bedDataModel.BedId = value;
+                    _bedDataModel.BedId = value;
                     OnPropertyChanged();
                 }
             }
         }
         public bool BedStatus
         {
-            get { return bedDataModel.BedStatus; }
+            get => _bedDataModel.BedStatus;
             set
             {
-                if (value != bedDataModel.BedStatus)
+                if (value != _bedDataModel.BedStatus)
                 {
-                    bedDataModel.BedStatus = value;
+                    _bedDataModel.BedStatus = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string PatientId
         {
-            get { return bedDataModel.PatientId; }
+            get => _bedDataModel.PatientId;
             set
             {
-                if (value != bedDataModel.PatientId)
+                if (value != _bedDataModel.PatientId)
                 {
-                    bedDataModel.PatientId = value;
+                    _bedDataModel.PatientId = value;
                     OnPropertyChanged();
                 }
             }
@@ -78,252 +73,73 @@ namespace AlertToCareFrontend.ViewModel
 
         public string IcuId
         {
-            get { return bedDataModel.IcuId; }
+            get => _bedDataModel.IcuId;
             set
             {
-                if (value != bedDataModel.IcuId)
+                if (value != _bedDataModel.IcuId)
                 {
-                    bedDataModel.IcuId = value;
+                    _bedDataModel.IcuId = value;
                     OnPropertyChanged();
                 }
             }
         }
-        
+
         public string Message
         {
-            get { return message; }
+            get => _message;
             set
             {
-                if (value != message)
+                if (value != _message)
                 {
-                    message = value;
+                    _message = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string AlertMessage
         {
-            get { return alertMessage; }
+            get => _alertMessage;
             set
             {
-                if (value != alertMessage)
+                if (value != _alertMessage)
                 {
-                    alertMessage = value;
+                    _alertMessage = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string AlertMessageHistory
         {
-            get { return alertMessageHistory; }
+            get => _alertMessageHistory;
             set
             {
-                if (value != alertMessageHistory)
+                if (value != _alertMessageHistory)
                 {
-                    alertMessageHistory = value;
+                    _alertMessageHistory = value;
                     OnPropertyChanged();
                 }
             }
         }
         #endregion
 
-        #region Logic
-
-        public static async Task<PatientDataModel> DeletePatientData(string patientId)
-        {
-            PatientDataModel responseObj = new PatientDataModel();
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                response = await client.DeleteAsync("api/PatientData/" + patientId).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<PatientDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
-        public static async Task<VitalsDataModel> DeleteVitalsData(string patientId)
-        {
-            VitalsDataModel responseObj = new VitalsDataModel();
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                response = await client.DeleteAsync("api/VitalData/" + patientId).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<VitalsDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
-        public static async Task<BedDataModel> PutBedData(BedDataModel requestObj)
-        {
-            // Initialization.  
-            BedDataModel responseObj = new BedDataModel();
-
-            // Posting.  
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
- 
-                response = await client.PutAsJsonAsync("api/BedData/" + requestObj.BedId, requestObj).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<BedDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
-        public static async Task<string> CheckVitalAndAlert(string patientId)
-        {
-            string responseObj = "";
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                response = await client.GetAsync("api/VitalData/CheckVitalAndAlert/" + patientId).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<string>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
+        #region Logic 
         void CheckPatientVitals()
         {
-            try
-            {
-                AlertMessage = CheckVitalAndAlert(bedDataModel.PatientId).Result;
-            }
-            catch(ArgumentException exception)
-            {
-                AlertMessage = exception.Message;
-            }
+            AlertMessage = HttpClientUtility.GetData("api/VitalData/CheckVitalAndAlert/" + _bedDataModel.PatientId).Result;
         }
         void DischargePatient()
         {
-            try
-            {
-                _ = DeletePatientData(bedDataModel.PatientId).Result;
-                _ = DeleteVitalsData(bedDataModel.PatientId).Result;
+            Message = HttpClientUtility.DeleteData("api/PatientData/" + _bedDataModel.PatientId).Result;
+            Message = HttpClientUtility.DeleteData("api/VitalData/" + _bedDataModel.PatientId).Result;
 
-                BedDataModel updatedBedData = new BedDataModel(bedDataModel.BedId, false, "");
-                _ = PutBedData(updatedBedData).Result;
+            BedDataModel updatedBedData = new BedDataModel(_bedDataModel.BedId, false, "");
+            _ = HttpClientUtility.PutBedData(updatedBedData).Result;
 
-                PatientId = "";
-                BedStatus = false;
-            }
-            catch (ArgumentException exception)
-            {
-                Message = exception.Message;
-            }
+            PatientId = "";
+            BedStatus = false;
+
+            AlertMessage = "";
+            AlertMessageHistory = "";
         }
 
         void StopAlert()

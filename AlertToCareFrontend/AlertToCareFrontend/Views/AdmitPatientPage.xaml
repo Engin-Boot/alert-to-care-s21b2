@@ -2,14 +2,14 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AlertToCareFrontend.Views"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:validationrules="clr-namespace:AlertToCareFrontend.ValidationRules"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AdmitPatientPage">
     <DockPanel LastChildFill="True" HorizontalAlignment="Center">
         <StackPanel Margin="0 0 50 0" DockPanel.Dock="Top">
-                <TextBlock Text="Admit New Patient" Style="{StaticResource ResourceKey=headingStyle}"></TextBlock>
+                <TextBlock Text="Admit New Patient" Style="{StaticResource ResourceKey=HeadingStyle}"></TextBlock>
                 <Grid DockPanel.Dock="Left" Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -25,22 +25,46 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.Children>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Id</TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Name</TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Patient Age</TextBlock>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Email</TextBlock>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Contact Number</TextBlock>
-                        <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Address</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Patient Id</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Patient Name</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Patient Age</TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Email</TextBlock>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Contact Number</TextBlock>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Address</TextBlock>
 
-                        <TextBox Text="{Binding Path=PatientId, Mode=OneWayToSource}" Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=PatientName, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=PatientAge, Mode=OneWayToSource}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=Email, Mode=OneWayToSource}" Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=ContactNo, Mode=OneWayToSource}" Grid.Row="4" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
-                        <TextBox Text="{Binding Path=Address, Mode=OneWayToSource}" Grid.Row="5" Grid.Column="1" Style="{StaticResource ResourceKey=textboxStyle}"></TextBox>
+                        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                            <Binding Path="PatientId" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <validationrules:IdValidationRules ValidatesOnTargetUpdated="True"></validationrules:IdValidationRules>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox Text="{Binding Path=PatientName, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=TextboxStyle}"></TextBox>
+                        <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                                <Binding Path="PatientAge" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <validationrules:AgeValidationRules ValidatesOnTargetUpdated="True"></validationrules:AgeValidationRules>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox Text="{Binding Path=Email, Mode=OneWayToSource}" Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=TextboxStyle}"></TextBox>
+                        <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
+                            <TextBox.Text>
+                            <Binding Path="ContactNo" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validationrules:ContactNumberValidationRules ValidatesOnTargetUpdated="True"></validationrules:ContactNumberValidationRules>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        </TextBox>
+                        <TextBox Text="{Binding Path=Address, Mode=OneWayToSource}" Grid.Row="5" Grid.Column="1" Style="{StaticResource ResourceKey=TextboxStyle}"></TextBox>
 
-                        <Button Grid.Row="6" Grid.Column="0" Content="Back" Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click"></Button>
-                        <Button Grid.Row="6" Grid.Column="1" Click="AdmitPatientButton_Click" Style="{StaticResource ResourceKey=standardButtonStyle}">Admit Patient</Button>
+                        <Button Grid.Row="6" Grid.Column="0" Content="Back" Style="{StaticResource ResourceKey=StandardButtonStyle}" Click="BackButton_Click"></Button>
+                        <Button Grid.Row="6" Grid.Column="1" Click="AdmitPatientButton_Click" Style="{StaticResource ResourceKey=StandardButtonStyle}">Admit Patient</Button>
                     </Grid.Children>
                 </Grid>
             </StackPanel>

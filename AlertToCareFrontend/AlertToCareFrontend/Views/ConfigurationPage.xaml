@@ -1,4 +1,4 @@
-﻿<Page x:Class="AlertToCareFrontend.ConfigurationPage"
+﻿<Page x:Class="AlertToCareFrontend.Views.ConfigurationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,7 +12,7 @@
         <viewmodels:ConfigurationViewModel></viewmodels:ConfigurationViewModel>
     </Page.DataContext>
     <DockPanel LastChildFill="True">
-        <TextBlock Text="Configure ICU" Style="{StaticResource ResourceKey=headingStyle}" DockPanel.Dock="Top"></TextBlock>
+        <TextBlock Text="Configure ICU" Style="{StaticResource ResourceKey=HeadingStyle}" DockPanel.Dock="Top"></TextBlock>
         <Grid HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -25,38 +25,38 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.Children>
-                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Id</TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">Number of beds</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=labelStyle}">ICU Layout</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">ICU Id</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">Number of beds</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ResourceKey=LabelStyle}">ICU Layout</TextBlock>
 
-                <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=errorFeedbackStyle}">
+                <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
                     <TextBox.Text>
-                        <Binding Path="IcuId" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                        <Binding Path="IcuId" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
                                 <validationrules:IdValidationRules ValidatesOnTargetUpdated="True"></validationrules:IdValidationRules>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=errorFeedbackStyle}">
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource ResourceKey=ErrorFeedbackStyle}">
                     <TextBox.Text>
-                        <Binding Path="TotalNoOfBeds" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                        <Binding Path="TotalNoOfBeds" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
                                 <validationrules:TotalNoOfBedsValidationRules ValidatesOnTargetUpdated="True"></validationrules:TotalNoOfBedsValidationRules>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <ComboBox ItemsSource="{Binding Path=Layouts}" SelectedItem="{Binding Path=Layout}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=comboBoxStyle}"></ComboBox>
+                <ComboBox ItemsSource="{Binding Path=Layouts}" SelectedItem="{Binding Path=Layout}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ResourceKey=ComboBoxStyle}"></ComboBox>
 
-                <Button Style="{StaticResource ResourceKey=standardButtonStyle}" Click="BackButton_Click" Grid.Row="3" Grid.Column="0">
+                <Button Style="{StaticResource ResourceKey=StandardButtonStyle}" Click="BackButton_Click" Grid.Row="3" Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="../Resources/icons/home.png" Width="20" Height="20"></Image>
                         <TextBlock Text="Back to home" VerticalAlignment="Center"></TextBlock>
                     </StackPanel>
                 </Button>
 
-                <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=standardButtonStyle}" Command="{Binding AddIcuCommand}">Configure ICU</Button>
+                <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource ResourceKey=StandardButtonStyle}" Command="{Binding AddIcuCommand}">Configure ICU</Button>
 
             </Grid.Children>
         </Grid>

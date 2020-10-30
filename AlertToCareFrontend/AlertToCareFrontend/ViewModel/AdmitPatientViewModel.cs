@@ -1,9 +1,5 @@
 ﻿using AlertToCareFrontend.Models;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using AlertToCareFrontend.Utilities;
 using System.Windows.Input;
 
 namespace AlertToCareFrontend.ViewModel
@@ -11,15 +7,19 @@ namespace AlertToCareFrontend.ViewModel
     class AdmitPatientViewModel:BaseViewModel
     {
         #region Fields
-        PatientDataModel patientDataModel;
-        string message;
+        readonly PatientDataModel _patientDataModel;
+        private string _message;
         #endregion
 
         #region Intializer
         public AdmitPatientViewModel(string bedId)
         {
-            patientDataModel = new PatientDataModel();
-            patientDataModel.BedId = bedId;
+            _patientDataModel = new PatientDataModel
+            {
+                BedId = bedId,
+                PatientAge = 50,
+                ContactNo = 88888888
+            };
 
             Message = "";
 
@@ -31,12 +31,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string PatientId
         {
-            get { return patientDataModel.PatientId; }
+            get => _patientDataModel.PatientId;
             set
             {
-                if (value != patientDataModel.PatientId)
+                if (value != _patientDataModel.PatientId)
                 {
-                    patientDataModel.PatientId = value;
+                    _patientDataModel.PatientId = value;
                     OnPropertyChanged();
                 }
             }
@@ -44,12 +44,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string PatientName
         {
-            get { return patientDataModel.PatientName; }
+            get => _patientDataModel.PatientName;
             set
             {
-                if (value != patientDataModel.PatientName)
+                if (value != _patientDataModel.PatientName)
                 {
-                    patientDataModel.PatientName = value;
+                    _patientDataModel.PatientName = value;
                     OnPropertyChanged();
                 }
             }
@@ -57,12 +57,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public int PatientAge
         {
-            get { return patientDataModel.PatientAge; }
+            get => _patientDataModel.PatientAge;
             set
             {
-                if (value != patientDataModel.PatientAge)
+                if (value != _patientDataModel.PatientAge)
                 {
-                    patientDataModel.PatientAge = value;
+                    _patientDataModel.PatientAge = value;
                     OnPropertyChanged();
                 }
             }
@@ -70,12 +70,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string Email
         {
-            get { return patientDataModel.Email; }
+            get => _patientDataModel.Email;
             set
             {
-                if (value != patientDataModel.Email)
+                if (value != _patientDataModel.Email)
                 {
-                    patientDataModel.Email = value;
+                    _patientDataModel.Email = value;
                     OnPropertyChanged();
                 }
             }
@@ -83,24 +83,24 @@ namespace AlertToCareFrontend.ViewModel
 
         public int ContactNo
         {
-            get { return patientDataModel.ContactNo; }
+            get => _patientDataModel.ContactNo;
             set
             {
-                if (value != patientDataModel.ContactNo)
+                if (value != _patientDataModel.ContactNo)
                 {
-                    patientDataModel.ContactNo = value;
+                    _patientDataModel.ContactNo = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string Address
         {
-            get { return patientDataModel.Address; }
+            get => _patientDataModel.Address;
             set
             {
-                if (value != patientDataModel.Address)
+                if (value != _patientDataModel.Address)
                 {
-                    patientDataModel.Address = value;
+                    _patientDataModel.Address = value;
                     OnPropertyChanged();
                 }
             }
@@ -108,12 +108,12 @@ namespace AlertToCareFrontend.ViewModel
 
         public string Message
         {
-            get { return message; }
+            get => _message;
             set
             {
-                if (value != message)
+                if (value != _message)
                 {
-                    message = value;
+                    _message = value;
                     OnPropertyChanged();
                 }
             }
@@ -124,163 +124,23 @@ namespace AlertToCareFrontend.ViewModel
         #region Logic
         void AdmitNewPatient()
         {
-            try
-            {
-                _ = PostPatientData(patientDataModel).Result;
+            Message = HttpClientUtility.PostPatientData(_patientDataModel).Result;
 
-                VitalsDataModel vitalDataModel = new VitalsDataModel(patientDataModel.PatientId, patientDataModel.BedId);
-                _ = PostVitalsData(vitalDataModel).Result;
+            VitalsDataModel vitalDataModel = new VitalsDataModel(_patientDataModel.PatientId, _patientDataModel.BedId);
+            Message = HttpClientUtility.PostVitalsData(vitalDataModel).Result;
 
-                BedDataModel updateBed = new BedDataModel(patientDataModel.BedId, true, patientDataModel.PatientId);
-                _ = PutBedData(updateBed).Result;
-                
-            }
-            catch(ArgumentException exception)
-            {
-                Message = exception.Message;
-            }
+            BedDataModel updateBed = new BedDataModel(_patientDataModel.BedId, true, _patientDataModel.PatientId);
+            Message = HttpClientUtility.PutBedData(updateBed).Result;
         }
-        public static async Task<PatientDataModel> PostPatientData(PatientDataModel requestObj)
-        {
-            // Initialization.  
-            PatientDataModel responseObj = new PatientDataModel();
-
-            // Posting.  
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                // HTTP POST  
-                response = await client.PostAsJsonAsync("api/PatientData/", requestObj).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<PatientDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-            
-            return responseObj;
-        }
-
-        public static async Task<VitalsDataModel> PostVitalsData(VitalsDataModel requestObj)
-        {
-            // Initialization.  
-            VitalsDataModel responseObj = new VitalsDataModel();
-
-            // Posting.  
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                // HTTP POST  
-                response = await client.PostAsJsonAsync("api/VitalData/", requestObj).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<VitalsDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
-        public static async Task<BedDataModel> PutBedData(BedDataModel requestObj)
-        {
-            // Initialization.  
-            BedDataModel responseObj = new BedDataModel();
-
-            // Posting.  
-            using (var client = new HttpClient())
-            {
-                // Setting Base address.  
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                // Setting content type.  
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // Setting timeout.  
-                client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                // Initialization.  
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                response = await client.PutAsJsonAsync("api/BedData/"+requestObj.BedId, requestObj).ConfigureAwait(false);
-
-                // Verification  
-                if (response.IsSuccessStatusCode)
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    responseObj = JsonConvert.DeserializeObject<BedDataModel>(result);
-
-                    // Releasing.  
-                    response.Dispose();
-                }
-                else
-                {
-                    // Reading Response.  
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    throw new ArgumentException(result);
-                }
-            }
-
-            return responseObj;
-        }
-
+        
+        
         #endregion
 
         #region Commands
         public ICommand AdmitNewPatientCommand
         {
             get;
-            set;
+            private set;
         }
         
         #endregion

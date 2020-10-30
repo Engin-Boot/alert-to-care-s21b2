@@ -8,9 +8,20 @@ namespace AlertToCareFrontend.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             string stringValue = value as string;
-            if (int.TryParse(stringValue, out int totalNoOfBeds))
+            
+            if(string.IsNullOrEmpty(stringValue))
             {
-                return totalNoOfBeds < 2 ? new ValidationResult(false, "Number of beds cannot be less than 2!") : new ValidationResult(true, "");
+                return new ValidationResult(false, " * Required");
+            }
+
+            return CheckIfAtleastOneBedIsSelected(stringValue);
+        }
+
+        private ValidationResult CheckIfAtleastOneBedIsSelected(string value)
+        {
+            if (int.TryParse(value, out int totalNoOfBeds))
+            {
+                return totalNoOfBeds < 1 ? new ValidationResult(false, "Number of beds cannot be less than 1!") : new ValidationResult(true, "");
             }
             else
             {

@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace AlertToCareFrontend.Views
 {
     /// <summary>
     /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class HomePage
     {
         public HomePage()
         {
@@ -27,12 +14,18 @@ namespace AlertToCareFrontend.Views
 
         private void ConfigureButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new ConfigurationPage());
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(new ConfigurationPage());
+            }
         }
 
         private void MonitorIcuButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new MonitorIcuPage());
+            if(NavigationService != null)
+            {
+                NavigationService.Navigate(new MonitorIcuPage());
+            }    
         }
     }
 }

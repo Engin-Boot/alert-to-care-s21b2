@@ -1,14 +1,12 @@
 ﻿using AlertToCareFrontend.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace AlertToCareFrontend.Views
 {
     /// <summary>
     /// Interaction logic for UpdateVitalsPage.xaml
     /// </summary>
-    public partial class UpdateVitalsPage : Page
+    public partial class UpdateVitalsPage
     {
         public UpdateVitalsPage(string patientId, string bedId)
         {
@@ -18,13 +16,9 @@ namespace AlertToCareFrontend.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService.CanGoBack)
+            if (NavigationService != null)
             {
-                this.NavigationService.GoBack();
-            }
-            else
-            {
-                this.NavigationService.Navigate(new MonitorIcuPage());
+                NavigationService.Navigate(new MonitorIcuPage());
             }
         }
     }

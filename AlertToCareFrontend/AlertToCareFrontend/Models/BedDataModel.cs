@@ -21,14 +21,6 @@
             PatientId = "";
             IcuId = Properties.Settings.Default.currentIcuId;
         }
-
-        public BedDataModel(ref BedDataModel bed)
-        {
-            BedId = bed.BedId;
-            BedStatus = bed.BedStatus;
-            PatientId = bed.PatientId;
-            IcuId = bed.IcuId;
-        }
         public BedDataModel(string bedId, bool status, string patientId)
         {
             BedId = bedId;

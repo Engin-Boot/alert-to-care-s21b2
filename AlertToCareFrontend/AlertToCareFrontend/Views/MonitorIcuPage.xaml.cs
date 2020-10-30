@@ -1,27 +1,13 @@
 ﻿using AlertToCareFrontend.Models;
 using AlertToCareFrontend.ViewModel;
-using AlertToCareFrontend.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace AlertToCareFrontend
+namespace AlertToCareFrontend.Views
 {
     /// <summary>
     /// Interaction logic for MonitorIcuPage.xaml
     /// </summary>
-    public partial class MonitorIcuPage : Page
+    public partial class MonitorIcuPage
     {
         public MonitorIcuPage()
         {
@@ -52,19 +38,44 @@ namespace AlertToCareFrontend
         private void AdmitButtonClickedEvent_Handler(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            BedView bed = e.Source as BedView;
-            BedViewModel bedViewModel = bed.DataContext as BedViewModel;
+            BedViewModel bedViewModel = GetBedViewModel(e.Source);
+            if (bedViewModel == null)
+                return;
+            //BedView bed = e.Source as BedView;
+            //BedViewModel bedViewModel = bed.DataContext as BedViewModel;
             string bedId = bedViewModel.BedId;
-            NavigationService.Navigate(new AdmitPatientPage(bedId));
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(new AdmitPatientPage(bedId));
+            }
+        }
+
+        private BedViewModel GetBedViewModel(object source)
+        {
+            if (source != null)
+            {
+                if (source is BedView bed)
+                {
+                    return bed.DataContext as BedViewModel;
+                }
+            }
+            return null;
         }
         private void UpdateVitalsButtonClickedEvent_Handler(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            BedView bed = e.Source as BedView;
-            BedViewModel bedViewModel = bed.DataContext as BedViewModel;
-            string bedId = bedViewModel.BedId;
-            string patientId = bedViewModel.PatientId;
-            NavigationService.Navigate(new UpdateVitalsPage(patientId, bedId));
+            //BedView bed = e.Source as BedView;
+            //BedViewModel bedViewModel = bed.DataContext as BedViewModel;
+            BedViewModel patientBedViewModel = GetBedViewModel(e.Source);
+            if (patientBedViewModel == null)
+                return;
+
+            string bedId = patientBedViewModel.BedId;
+            string patientId = patientBedViewModel.PatientId;
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(new UpdateVitalsPage(patientId, bedId));
+            }
         }
 
         private void PositionBedAsPerIcuLayout(BedDataModel bedDataModel, int bedNum, int totalNumOfBeds, string layout)
@@ -73,30 +84,26 @@ namespace AlertToCareFrontend
 
             if (bedNum <= totalNumOfBeds / 2)
             {
-                leftStackPanel.Children.Add(bed);
+                LeftStackPanel.Children.Add(bed);
             }
             else
             {
                 if (layout.Equals("Parallel"))
                 {
-                    rightStackPanel.Children.Add(bed);
+                    RightStackPanel.Children.Add(bed);
                 }
                 else
                 {
-                    bottomStackPanel.Children.Add(bed);
+                    BottomStackPanel.Children.Add(bed);
                 }
             }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if(this.NavigationService.CanGoBack)
+            if (NavigationService != null)
             {
-                this.NavigationService.GoBack();
-            }
-            else
-            {
-                this.NavigationService.Navigate(new HomePage());
+                NavigationService.Navigate(new HomePage());
             }
         }
     }
